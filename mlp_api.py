@@ -9,6 +9,7 @@ import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
 import numpy as np
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
 
 
 nltk.download('vader_lexicon')
@@ -39,6 +40,13 @@ model.load_state_dict(torch.load("mlp_model.pth"))
 model.eval()
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class TickerData(BaseModel):
     ticker: str
